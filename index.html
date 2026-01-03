@@ -144,10 +144,20 @@
         function enviarRegistro() {
             const nombre = document.getElementById('nombre-usuario').value;
             const nums = document.getElementById('numeros-finales').value;
-            if(!nombre || !nums) return alert("Por favor, ingresa tu nombre y elige al menos un número.");
             
-            const mensaje = encodeURIComponent(`*NUEVO REGISTRO - LA SUERTE PS*\n👤 Nombre: ${nombre}\n🎟️ Números: ${nums}\n📺 Premio: ${PREMIO}\n\n_Realizaré mi depósito a continuación._`);
-            window.open(`https://wa.me/${TELEFONO}?text=${mensaje}`, '_blank');
+            if(!nombre || !nums) {
+                return alert("Por favor, ingresa tu nombre y elige al menos un número.");
+            }
+
+            // Construcción del mensaje con emojis codificados para evitar errores
+            const msg = `🍀 *NUEVO REGISTRO - LA SUERTE PS* 🍀\n\n` +
+                        `👤 *Nombre:* ${nombre}\n` +
+                        `🎟️ *Números:* ${nums}\n` +
+                        `📺 *Premio:* ${PREMIO}\n\n` +
+                        `_Realizaré mi depósito a continuación._`;
+
+            const url = `https://wa.me/${TELEFONO}?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
         }
     </script>
 </body>
