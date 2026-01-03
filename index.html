@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteos Pardo & Solorio</title>
+    <style>
+        :root { --primario: #1a1a1a; --dorado: #c5a059; --blanco: #ffffff; }
+        body { font-family: sans-serif; background: #f4f4f4; text-align: center; margin: 0; }
+        header { background: var(--primario); color: var(--dorado); padding: 20px; border-bottom: 4px solid var(--dorado); }
+        .card { background: white; max-width: 500px; margin: 20px auto; padding: 20px; border-radius: 15px; shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .grid-numeros { display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 10px; margin: 20px 0; }
+        .numero { padding: 10px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .vendido { background: #ffcccc; color: #cc0000; cursor: not-allowed; }
+        .form-pago { margin-top: 30px; padding: 20px; border-top: 2px dashed #ddd; text-align: left; }
+        .form-pago input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn-whatsapp { background: #25d366; color: white; padding: 15px; border: none; border-radius: 50px; width: 100%; font-weight: bold; cursor: pointer; text-decoration: none; display: block; }
+    </style>
+</head>
+<body>
+    <header><h1>PARDO & SOLORIO</h1><p>Suerte y Confianza</p></header>
+    <div class="card">
+        <h2>Rifa: iPhone 15 Pro Max</h2>
+        <p>Selecciona tus números:</p>
+        <div class="grid-numeros" id="tablero"></div>
+        <div class="form-pago">
+            <label>Tu Nombre:</label>
+            <input type="text" id="nombre-usuario" placeholder="Ej. Juan Pérez">
+            <label>Números:</label>
+            <input type="text" id="numeros-finales" readonly>
+            <button onclick="enviarRegistro()" class="btn-whatsapp">Confirmar y Enviar WhatsApp</button>
+        </div>
+    </div>
+    <script>
+        const TELEFONO = "521XXXXXXXXXX"; // <--- CAMBIA ESTO POR TU CELULAR
+        const PREMIO = "iPhone 15 Pro Max";
+        let seleccionados = [];
+        const VENDIDOS = [7, 15, 22]; // Números ya vendidos [cite: 6]
+
+        const tablero = document.getElementById('tablero');
+        for (let i = 1; i <= 100; i++) { // Genera 100 números [cite: 7]
+            const div = document.createElement('div');
+            div.classList.add('numero');
+            div.innerText = i.toString().padStart(3, '0');
+            if (VENDIDOS.includes(i)) {
+                div.classList.add('vendido');
+            } else {
+                div.onclick = function() {
+                    if(seleccionados.includes(i)) {
+                        seleccionados = seleccionados.filter(n => n !== i);
+                        this.style.background = "white";
+                    } else {
+                        seleccionados.push(i);
+                        this.style.background = "#c5a059";
+                    }
+                    document.getElementById('numeros-finales').value = seleccionados.join(", ");
+                };
+            }
+            tablero.appendChild(div);
+        }
+
+        function enviarRegistro() {
+            const nombre = document.getElementById('nombre-usuario').value;
+            const nums = document.getElementById('numeros-finales').value;
+            if(!nombre || !nums) return alert("Llena tu nombre y elige números");
+            const mensaje = encodeURIComponent(`*NUEVO REGISTRO*\n👤 Nombre: ${nombre}\n🎟️ Números: ${nums}\n📱 Premio: ${PREMIO}`);
+            window.open(`https://wa.me/${TELEFONO}?text=${mensaje}`, '_blank');
+        }
+    </script>
+</body>
+</html>
