@@ -6,46 +6,70 @@
     <title>La Suerte PS 🍀</title>
     <style>
         :root { --primario: #000000; --verde: #9cfc03; --blanco: #ffffff; }
-        body { font-family: sans-serif; background-color: #1a1a1a; text-align: center; margin: 0; color: var(--blanco); }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #1a1a1a; text-align: center; margin: 0; color: var(--blanco); }
         header { background: var(--primario); padding: 30px 20px; border-bottom: 5px solid var(--verde); }
         header img { height: 180px; width: auto; }
         .card { background: #ffffff; max-width: 600px; margin: 30px auto; padding: 25px; border-radius: 20px; color: #333; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .instrucciones { background: #f0f0f0; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-size: 0.9rem; border-left: 5px solid var(--verde); text-align: left; }
+        .contador { background: var(--primario); color: var(--verde); padding: 10px; border-radius: 50px; display: inline-block; margin-bottom: 15px; font-weight: bold; font-size: 0.9rem; }
         .grid-numeros { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 12px; margin: 25px 0; }
         .numero { padding: 15px 5px; border: 2px solid #ddd; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .numero:hover { border-color: var(--verde); transform: scale(1.05); }
         .vendido { background: #ff4d4d; color: white; cursor: not-allowed; border: none; }
         .form-pago { margin-top: 30px; padding-top: 20px; border-top: 2px dashed #ccc; text-align: left; }
         .form-pago input { width: 100%; padding: 12px; margin: 10px 0 20px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-        .btn-whatsapp { background: #25d366; color: white; padding: 18px; border: none; border-radius: 50px; width: 100%; font-weight: bold; cursor: pointer; }
+        .btn-whatsapp { background: #25d366; color: white; padding: 18px; border: none; border-radius: 50px; width: 100%; font-weight: bold; cursor: pointer; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); }
     </style>
 </head>
 <body>
     <header>
-        <img src="Vibras.png" alt="La Suerte PS">
-        <p style="color: var(--verde); font-weight: bold; margin-top: 10px;">Pardo & Solorio - Sorteos de Confianza</p>
+        <img src="Vibras.png" alt="La Suerte PS"> <p style="color: var(--verde); font-weight: bold; margin-top: 10px;">Pardo & Solorio - Sorteos de Confianza</p>
     </header>
+
     <div class="card">
-        <h2>Rifa: Pantalla Samsung 50 pulgadas</h2>
-        <p>Selecciona tus números:</p>
+        <div class="instrucciones">
+            <strong>¿Cómo ganar? 🚀</strong><br>
+            1. Toca tus números favoritos en el tablero.<br>
+            2. Escribe tu nombre completo.<br>
+            3. Envía el WhatsApp y adjunta tu comprobante.
+        </div>
+
+        <div class="contador" id="quedan">Cargando boletos...</div>
+
+        <h2>📺 Rifa: Pantalla Samsung 50 pulgadas</h2>
+        <p style="color: #666; font-weight: bold;">Costo por boleto: $150 MXN</p>
+        
         <div class="grid-numeros" id="tablero"></div>
+
         <div class="form-pago">
-            <label>Tu Nombre:</label>
+            <label>Tu Nombre Completo:</label>
             <input type="text" id="nombre-usuario" placeholder="Ej. Juan Pérez">
             <label>Números Seleccionados:</label>
-            <input type="text" id="numeros-finales" readonly>
-            <button onclick="enviarRegistro()" class="btn-whatsapp">Confirmar y Enviar WhatsApp</button>
+            <input type="text" id="numeros-finales" readonly placeholder="Toca los números arriba">
+            <button onclick="enviarRegistro()" class="btn-whatsapp">✅ Confirmar y Enviar WhatsApp</button>
         </div>
     </div>
+
     <script>
-        const TELEFONO = "522205328283"; 
+        // Mensaje de bienvenida
+        window.onload = () => {
+            alert("¡Bienvenido a La Suerte PS! 🍀\n\nElige tus números favoritos para participar en la rifa de la Pantalla Samsung de 50 pulgadas. ¡Mucha suerte!");
+        };
+
+        const TELEFONO = "522205328283"; //
         const PREMIO = "Pantalla Samsung 50 pulgadas";
-        let seleccionados = [];
-        const VENDIDOS = []; 
+        const TOTAL = 30; //
+        const VENDIDOS = []; // Aquí agrega los números vendidos conforme pase el tiempo
+
+        // Actualizar contador
+        document.getElementById('quedan').innerText = `🔥 ¡Solo quedan ${TOTAL - VENDIDOS.length} boletos disponibles!`;
+
         const tablero = document.getElementById('tablero');
-        for (let i = 1; i <= 30; i++) { 
+        for (let i = 1; i <= TOTAL; i++) { 
             const div = document.createElement('div');
             div.classList.add('numero');
             div.innerText = i.toString().padStart(3, '0');
+
             if (VENDIDOS.includes(i)) {
                 div.classList.add('vendido');
                 div.innerText = 'X';
@@ -54,20 +78,26 @@
                     if(seleccionados.includes(i)) {
                         seleccionados = seleccionados.filter(n => n !== i);
                         this.style.background = "white";
+                        this.style.color = "black";
                     } else {
                         seleccionados.push(i);
                         this.style.background = "#9cfc03"; 
+                        this.style.color = "black";
                     }
                     document.getElementById('numeros-finales').value = seleccionados.join(", ");
                 };
             }
             tablero.appendChild(div);
         }
+
+        let seleccionados = [];
+
         function enviarRegistro() {
             const nombre = document.getElementById('nombre-usuario').value;
             const nums = document.getElementById('numeros-finales').value;
-            if(!nombre || !nums) return alert("Llena tus datos");
-            const mensaje = encodeURIComponent(`*NUEVO REGISTRO - LA SUERTE PS*\n👤 Nombre: ${nombre}\n🎟️ Números: ${nums}\n📺 Premio: ${PREMIO}`);
+            if(!nombre || !nums) return alert("Por favor, ingresa tu nombre y elige al menos un número.");
+            
+            const mensaje = encodeURIComponent(`*NUEVO REGISTRO - LA SUERTE PS*\n👤 Nombre: ${nombre}\n🎟️ Números: ${nums}\n📺 Premio: ${PREMIO}\n\n_Envío mi comprobante de pago a continuación:_`);
             window.open(`https://wa.me/${TELEFONO}?text=${mensaje}`, '_blank');
         }
     </script>
