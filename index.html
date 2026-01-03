@@ -10,6 +10,21 @@
         header { background: var(--primario); padding: 30px 20px; border-bottom: 5px solid var(--verde); }
         header img { height: 180px; width: auto; }
         .card { background: #ffffff; max-width: 600px; margin: 30px auto; padding: 25px; border-radius: 20px; color: #333; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        
+        /* VENTANA DE BIENVENIDA (MODAL) */
+        .modal-bienvenida {
+            display: flex; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center;
+        }
+        .modal-contenido {
+            background: #1a1a1a; color: white; padding: 35px; border-radius: 25px; border: 2px solid var(--verde);
+            max-width: 85%; text-align: center; box-shadow: 0 0 30px rgba(156, 252, 3, 0.3);
+        }
+        .btn-entrar {
+            background: var(--verde); color: black; border: none; padding: 12px 35px; 
+            border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 25px; font-size: 1rem;
+        }
+
         .instrucciones { background: #f0f0f0; padding: 15px; border-radius: 10px; margin-bottom: 20px; font-size: 0.9rem; border-left: 5px solid var(--verde); text-align: left; }
         .pago-container { background: #e8f5e9; padding: 15px; border-radius: 10px; margin-top: 20px; text-align: left; border: 1px solid #25d366; }
         .pago-item { margin-bottom: 10px; font-size: 0.85rem; line-height: 1.4; }
@@ -25,6 +40,15 @@
     </style>
 </head>
 <body>
+
+    <div id="pantallaBienvenida" class="modal-bienvenida">
+        <div class="modal-contenido">
+            <h2 style="color: var(--verde); margin-top: 0;">¡Bienvenido a La Suerte PS! 🍀</h2>
+            <p style="line-height: 1.5;">Participa en nuestra rifa y llévate una <b>Pantalla Samsung de 50"</b>.<br><br>Selecciona tus números favoritos en el tablero y confirma tu lugar.</p>
+            <button class="btn-entrar" onclick="quitarBienvenida()">¡EMPEZAR!</button>
+        </div>
+    </div>
+
     <header>
         <img src="Vibras.png" alt="La Suerte PS">
         <p style="color: var(--verde); font-weight: bold; margin-top: 10px;">Pardo & Solorio - Sorteos de Confianza</p>
@@ -58,17 +82,17 @@
             <h4 style="margin-top: 0; color: #1b5e20; border-bottom: 1px solid #a5d6a7; padding-bottom: 5px;">💳 Cuentas para Depósito</h4>
             
             <div class="pago-item">
-                <strong>BANCO 1:</strong> [BBVA Bancomer]<br>
-                <strong>TITULAR:</strong> [Ewan Pardo]<br>
-                <strong>CLABE:</strong> <span class="clabe">[012180015935118274]</span>
+                <strong>BANCO 1:</strong> BBVA Bancomer<br>
+                <strong>TITULAR:</strong> Ewan Pardo<br>
+                <strong>CLABE:</strong> <span class="clabe">012180015935118274</span>
             </div>
 
             <div style="height: 10px;"></div>
 
             <div class="pago-item">
-                <strong>BANCO 2:</strong> [STP]<br>
-                <strong>TITULAR:</strong> [Jonathan Solorio]<br>
-                <strong>CLABE:</strong> <span class="clabe">[64699040405948649]</span>
+                <strong>BANCO 2:</strong> STP<br>
+                <strong>TITULAR:</strong> Jonathan Solorio<br>
+                <strong>CLABE:</strong> <span class="clabe">64699040405948649</span>
             </div>
 
             <p style="font-size: 0.75rem; color: #4caf50; margin-bottom: 0; font-style: italic;">
@@ -78,14 +102,14 @@
     </div>
 
     <script>
-        window.onload = () => {
-            alert("¡Bienvenido a La Suerte PS! 🍀\n\nElige tus números favoritos para participar.");
-        };
+        function quitarBienvenida() {
+            document.getElementById("pantallaBienvenida").style.display = "none";
+        }
 
         const TELEFONO = "522205328283"; 
         const PREMIO = "Pantalla Samsung 50 pulgadas";
         const TOTAL = 30; 
-        const VENDIDOS = []; // Agrega aquí los números vendidos, ej: [5, 12]
+        const VENDIDOS = []; 
 
         document.getElementById('quedan').innerText = `🔥 ¡Solo quedan ${TOTAL - VENDIDOS.length} boletos disponibles!`;
 
